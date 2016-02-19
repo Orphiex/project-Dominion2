@@ -3,7 +3,10 @@ module.exports = function(request, callback) {
   var session = request.yar.get('hapi_dominion_session'); // CHANGE-ME
 
   if (!session) {
-    return callback({ "authenticated": false, "message": "Unauthorized" });
+    return callback({
+      "authenticated": false,
+      "message": "Unauthorized"
+    });
   }
 
   db.collection('sessions').findOne({ "session_id": session.session_id }, function(err, result) {

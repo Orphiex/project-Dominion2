@@ -2,23 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hapi Dominion</title> <!-- CHANGE-ME -->
+  <title>The Basics of Dominion</title> <!-- CHANGE-ME -->
 
   <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="/public/js/layouts/layout.js"></script>
 
+  <script src="/public/js/dynamic_pages/dominion-deck.js"></script>
+  <script src="/public/js/dynamic_pages/empty-deck.js"></script>
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="/public/css/layouts/layout.css">
+  <link rel='shortcut icon' type='image/x-icon' href='/public/images/favicon.ico' />
+
 </head>
 <body>
-  {{#if authenticated}}
-    <button id="signout-btn" class="btn btn-default">Sign Out</button>
-  {{else}}
-    <a href="/signup" class="btn btn-default">Sign Up</a>
-    <a href="/signin" class="btn btn-default">Sign In</a>
-  {{/if}}
+  <header class="container-fluid">
+    <img src="http://wiki.dominionstrategy.com/images/thumb/5/50/DomimionLogo.jpg/450px-DomimionLogo.jpg"></a>
+  </header>
 
-  {{{content}}}
+  <%- content %>
 </body>
 </html>

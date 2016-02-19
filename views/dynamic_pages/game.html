@@ -1,0 +1,250 @@
+<header class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a href="#game" data-toggle="tab" aria-expanded="true">Game</a>
+        </li>
+        <li class>
+          <a href="#rules" data-toggle="tab" aria-expanded="false">Rules</a>
+        </li>
+        <li class="newGame">
+          <button id="new-game" class="btn btn-primary">New Game</button>
+        </li>
+        <li class="quitGame">
+          <button id="quit-game" class="btn btn-danger">Quit Game</button>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div id="game" class="tab-pane fade active in"></div>
+        <div id="rules" class="tab-pane fade">
+        <!--All of the rules are copied directly from http://boardgames.about.com/od/Dominion/a/How-to-Play-Dominion.htm, as I don't want to waste time on that instead of coding.-->
+          <br>
+          <p>Dominion is, thematically, a game about monarchs attempting to expand their kingdom. Mechanically, it is a deck-building game where players buy cards each turn to add to their decks, slowly growing more powerful as the game progresses. Here's a quick guide to the basic rules of Dominion.</p>
+          <br>
+          <p>This game uses 3 types of cards:</p>
+          <p>Treasure cards, which let you buy things.</p>
+          <p>Victory cards, which count towards your score at the end of the game.</p>
+          <p>Action cards, which let you perform special actions during your turn.  This is what makes Dominion special, as each game uses a different selection of 10 action cards randomly selected from more than 25 options.</p>
+          <br>
+          <p>The goal of the game is simple:</p>
+          <p>To have the most victory points when the game ends.</p>
+          <br>
+          <p>Each player receives 7 copper and 3 estates as a starting deck.  Each player then shuffles their deck, draws five cards, and the game begins with whomever is chosen as the starting player.</p>
+          <br>
+          <p>How to Play</p>
+          <p>Your turn consists of four phases:</p>
+          <p>A)ction: You may play one action card from your hand. Follow the directions on the card, which may instruct you to draw additional cards, gain spending power for your upcoming Buy phase, or give you extra actions to play additional action cards.</p>
+          <p>B)uy: You may purchase any one card in a pile on the table.  To do so, play treasure cards from your hand until the value is at least as high as the purchase price of the card you want to buy.</p>
+          <p>C)leanup: The card you purchased, all cards that you played, and any cards remaining in your hand, are all placed in your discard pile.</p>
+          <p>D)raw: Draw five cards from your deck to replenlish your hand. If there are not enough cards in your deck, shuffle your discard pile, and it becomes the base of your draw pile.</p>
+          <br>
+          <p>End Game</p>
+          <p>The game ends when the last Province is bought, or when three piles of Action cards are empty.  Players count the victory points in their decks, and the player with the most points wins! In case of a tie, whoever went first loses.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<!--This section is mostly unformatted, since I'm not sure of the best alignment and arrangement yet.-->
+<section id="cardSelection" class="container" align="center">
+  <div id="staticCards" class="container cardField col-xs-3">
+    <div id="treasureField" class="col-xs-6">
+      <div class="card-slot">
+        <img src="images/Treasure/376px-Copper.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="copper">Buy</button>
+      </div>
+      <div class="card-slot">
+        <img src="images/Treasure/375px-Silver.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="silver">Buy</button>
+      </div>
+      <div class="card-slot">
+        <img src="images/Treasure/377px-Gold.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="gold">Buy</button>
+      </div>
+    </div>
+    <div id="victoryField" class="col-xs-6">
+      <div class="card-slot">
+        <img src="images/Victory/377px-Estate.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="estate">Buy</button>
+      </div>
+      <div class="card-slot">
+        <img src="images/Victory/375px-Duchy.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="duchy">Buy</button>
+      </div>
+      <div class="card-slot">
+        <img src="images/Victory/379px-Province.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="province">Buy</button>
+      </div>
+    </div>
+  </div>
+  <div id="actionField" class="cardField col-xs-9">
+    <div id="actionSet1" class="actionCol col-xs-2">
+      <div class="card-slot">
+        <img src="images/Action/378px-Cellar.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="cellar">Buy</button>
+      </div>
+      <div class="card-slot">
+        <img src="images/Action/378px-Village.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="village">Buy</button>
+      </div>
+    </div>
+    <div id="actionSet2" class="actionCol col-xs-2">
+      <div class="card-slot">
+        <img src="images/Action/376px-Woodcutter.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="woodcutter">Buy</button>
+      </div>
+      <div class="card-slot">
+        <img src="images/Action/377px-Workshop.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="workshop">Buy</button>
+      </div>
+    </div>
+    <div id="actionSet3" class="actionCol col-xs-2">
+      <div class="card-slot">
+        <img src="images/Action/378px-Throne_Room.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="throneroom">Buy</button>
+      </div>
+      <div class="card-slot">
+        <img src="images/Action/376px-Smithy.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="smithy">Buy</button>
+      </div>
+    </div>
+    <div id="actionSet4" class="actionCol col-xs-2">
+      <div class="card-slot">
+        <img src="images/Action/377px-Council_Room.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="councilroom">Buy</button>
+      </div>
+      <div class="card-slot">
+        <img src="images/Action/375px-Laboratory.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="laboratory">Buy</button>
+      </div>
+    </div>
+    <div id="actionSet5" class="actionCol col-xs-2">
+      <div class="card-slot">
+        <img src="images/Action/374px-Market.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="market">Buy</button>
+      </div>
+      <div class="card-slot">
+        <img src="images/Action/375px-Festival.jpg" class="card-image">
+        <button class="buy-button btn btn-default" data-name="festival">Buy</button>
+      </div>
+    </div>
+    </div>
+    <div class="col-xs-2"></div>
+  </div>
+</section>
+<section id="playerHands" class="container">
+  <ul class="nav nav-tabs">
+    <li class="active">
+      <a href="#player1" data-toggle="tab" aria-expanded="true">Player 1</a>
+    </li>
+    <li class>
+      <a href="#player2" data-toggle="tab" aria-expanded="false">Player 2</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div id="player1" class="tab-pane fade active in">
+      <div class="turn-order col-xs-2">
+        <button class="start-turn btn btn-default">Start Turn</button>
+        <div class="turn-box turnA">
+          <p class="actionPoints"></p>
+          <button class="play-action btn btn-default">Action</button>
+          <button class="pass-action btn btn-default">Pass</button>
+        </div>
+        <div class="turn-box turnB">
+          <p class="buyPoints"></p>
+          <p class="treasurePoints"></p>
+          <button class="play-buy btn btn-default">Buy</button>
+          <button class="pass-buy btn btn-default">Pass</button>
+        </div>
+        <div class="turn-box turnC">
+          <button class="play-cleanup btn btn-default">Clean Up</button>
+        </div>
+        <div class="turn-box turnD">
+          <button class="play-draw btn btn-default">Draw</button>
+        </div>
+        <button class="end-turn btn btn-default">End Turn</button>
+      </div>
+      <div class="draw-discard col-xs-1">
+        <div class="draw card-slot">
+          <img src="images/Randomizer.jpg" class="card-image"><p>Draw<br/>Pile</p>
+        </div>
+        <div class="discard card-slot">
+          <img src="images/Blank.jpg" class="card-image"><p>Discard<br/>Pile</p>
+        </div>
+      </div>
+      <div class="player-hand col-xs-9"></div>
+    </div>
+    <div id="player2" class="tab-pane fade">
+      <div class="turn-order col-xs-2">
+        <button class="start-turn btn btn-default">Start Turn</button>
+        <div class="turn-box turnA">
+          <p class="actionPoints"></p>
+          <button class="play-action btn btn-default">Action</button>
+          <button class="pass-action btn btn-default">Pass</button>
+        </div>
+        <div class="turn-box turnB">
+          <p class="buyPoints"></p>
+          <p class="treasurePoints"></p>
+          <button class="play-buy btn btn-default">Buy</button>
+          <button class="pass-buy btn btn-default">Pass</button>
+        </div>
+        <div class="turn-box turnC">
+          <button class="play-cleanup btn btn-default">Clean Up</button>
+        </div>
+        <div class="turn-box turnD">
+          <button class="play-draw btn btn-default">Draw</button>
+        </div>
+        <button class="end-turn btn btn-default">End Turn</button>
+      </div>
+      <div class="draw-discard col-xs-1">
+        <div class="draw card-slot">
+          <img src="images/Randomizer.jpg" class="card-image"><p>Draw<br/>Pile</p>
+        </div>
+        <div class="discard card-slot">
+          <img src="images/Blank.jpg" class="card-image"><p>Discard<br/></p>
+        </div>
+      </div>
+      <div class="player-hand col-xs-9"></div>
+    </div>
+  </div>
+</section>
+<footer class="container">
+  <p class="signature">Made by Judah Frankel.  You may now applaud.</p>
+</footer>
+
+<div id="endGameModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Game Over!</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="quitGameModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Do you want to save your game?</h4>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-success" id="keepSaveGame">Save Game</button>
+        <button type="button" class="btn btn-warning" id="deleteSaveGame">Delete Game</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script src="/public/js/dynamic_pages/game.js"></script>
+<link rel="stylesheet" href="/public/css/dynamic_pages/game.css">

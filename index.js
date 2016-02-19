@@ -10,9 +10,10 @@ server.connection({
 
 // plugins that needs to be registered
 var plugins = [
-  { register: require('vision')}, // views
-  { register: require('inert')}, // public files hosting
-  { register: require('./routes/static_pages.js')},
+  { register: require('vision') }, // views
+  { register: require('inert') }, // public files hosting
+  { register: require('./routes/static_pages.js') },
+  { register: require('./routes/games.js') },
   { register: require('./routes/auth.js')},
   { register: require('./routes/api/auth.js')},
   { register: require('hapi-mongodb'), // setup the mongo connect
@@ -42,7 +43,7 @@ server.register(plugins, function(err){
 
   // configure views
   server.views({
-    engines: {html: require('handlebars')},
+    engines: {html: require('ejs')},
     path: Path.join(__dirname, 'views'),
     layout: true,
     layoutPath: Path.join(__dirname, 'views/layouts')

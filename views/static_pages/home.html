@@ -1,6 +1,50 @@
-<div id="home-page">
-  <h2>Home Page</h2>
-</div>
+<section id="cover-page">
+  <div class="cover-screen">
+    <div class="container">
+    <br>
+      <h2>A stripped-down game for two players</h2>
+      <br>
+      <h4>You are a monarch, like your parents before you, a ruler of a small pleasant kingdom of rivers and evergreens. Unlike your parents, however, you have hopes and dreams! You want a bigger and more pleasant kingdom, with more rivers and a wider variety of trees. You want a Dominion! In all directions lie fiefs, freeholds, and feodums. All are small bits of land, controlled by petty lords and verging on anarchy. You will bring civilization to these people, uniting them under your banner.</h4>
+      <br>
+      <h4>But wait! It must be something in the air; several other monarchs have had the exact same idea. You must race to get as much of the unclaimed land as possible, fending them off along the way. To do this you will hire minions, construct buildings, spruce up your castle, and fill the coffers of your treasury. Your parents wouldn’t be proud, but your grandparents, on your mother's side, would be delighted.</h4>
+      <br>
+    </div>
+    <div class="container">
+      <div class="row">
+        <button id="start-game" class="btn btn-success btn-lg">Create your Dominion!</button>
+      </div>
+    </div>
+  </div>
+</section>
 
-<script src="/public/js/static_pages/home.js"></script>
-<link rel="stylesheet" href="/public/css/static_pages/home.css">
+<section id="login-page" style="display: none;">
+  <div id="static-pages-home">
+
+    <div class="col-xs-6">
+      <h3>Sign Up</h3>
+
+      <form id="signup">
+        <input type="text" name="email" placeholder="email">
+        <input type="text" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+        <input type="submit" name="Sign Up">
+      </form>
+      <div id="signup-form-message"></div>
+    </div>
+
+
+    <div class="col-xs-6">
+      <h3>Sign In</h3>
+
+      <form id="signin">
+        <input type="text" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+        <input type="submit" name="Sign in">
+      </form>
+      <div id="signin-form-message"></div>
+    </div>
+
+  </div>
+</section>
+
+<script src="public/js/static_pages/home.js"></script>

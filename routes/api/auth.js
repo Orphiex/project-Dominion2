@@ -1,4 +1,4 @@
-var Joi    = require('joi');
+var Joi = require('joi');
 var Bcrypt = require('bcrypt');
 
 var randomKeyGenerator = function () { return (((1+Math.random())*0x10000)|0).toString(16).substring(1); };
@@ -101,6 +101,7 @@ exports.register = function(server, options, next) {
         var session = request.yar.get('hapi_dominion_session'); // CHANGE-ME
 
         if (!session) {
+          console.log("!session");
           return reply({ "message": "Already logged out" }).code(400);
         }
 

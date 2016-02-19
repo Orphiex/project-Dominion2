@@ -17,10 +17,15 @@ exports.register = function (server, options, next) {
       handler: function(request, reply) {
         Authenticated(request, function (result) {
           var data = result; // need to have authenticated inorder to show signout button
-          reply.view('static_pages/home', data).code(200);
+          if (data.authenticated) {
+            reply.redirect('/setup').code(307);
+          } else {
+            console.log(data);
+            reply.view('static_pages/home', data).code(200);
+          }
         });
       }
-    }
+    },
   ]);
 
   next();
