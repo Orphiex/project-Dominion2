@@ -10,7 +10,7 @@ $(document).ready(function(){
     $('.start-turn').removeAttr('disabled');
     $('#endGameModal button').removeAttr('disabled');
     $('#quitGameModal button').removeAttr('disabled');
-  }
+  };
 
   var bindQuitGame = function(){
     $('#quit-game').on('click', function(e){
@@ -51,7 +51,7 @@ $(document).ready(function(){
     createDeck(p2_deck);
     drawHand(p1_deck, p1_hand);
     drawHand(p2_deck, p2_hand);
-  }
+  };
 
   var actionCount = 1;
   var buyCount = 1;
@@ -75,7 +75,7 @@ $(document).ready(function(){
       playerHand = $('#player2 .player-hand');
       playerDiscard = p2_discard;
     }
-  }
+  };
 
   // Set up shop
   // Assign supply values
@@ -85,29 +85,29 @@ $(document).ready(function(){
     for (var key in dominionShop){
       $('.buy-button[data-name="' + key + '"]').data("supply", dominionShop[key].supply).data("cost", dominionShop[key].cost).data("type", dominionShop[key].type);
     }
-  }
+  };
 
   var assignArrays = function(){
     $.extend(true, p1_deck, blankCards);
     $.extend(true, p1_discard, blankCards);
     $.extend(true, p2_deck, blankCards);
     $.extend(true, p2_discard, blankCards);
-  }
+  };
 
 
   // Create player decks
   function createDeck(playerDeck) {
     // move 7 copper from shop to deck
     for (var j = 0; j < 7; j++) {
-      playerDeck["copper"].supply++
+      playerDeck["copper"].supply++;
       var currentValue = $('.buy-button[data-name="copper"]').data("supply");
       $('.buy-button[data-name="copper"]').data("supply", currentValue-1);
     }
     // move 3 estate from shop to deck
-    for (var j = 0; j < 3; j++) {
-      playerDeck["estate"].supply++
-      var currentValue = $('.buy-button[data-name="estate"]').data("supply");
-      $('.buy-button[data-name="estate"]').data("supply", currentValue-1);
+    for (var k = 0; k < 3; k++) {
+      playerDeck["estate"].supply++;
+      var currentValue2 = $('.buy-button[data-name="estate"]').data("supply");
+      $('.buy-button[data-name="estate"]').data("supply", currentValue2-1);
     }
   }
 
@@ -203,7 +203,7 @@ $(document).ready(function(){
   // Step 6 binding - draw new hand
   $('.play-draw').on('click', function(){
     $('.play-draw').prop('disabled', true);
-    if (dominionShop["province"].supply == 0) {
+    if (dominionShop["province"].supply === 0) {
       endgame();
     } else {
       drawHand(playerDeck);

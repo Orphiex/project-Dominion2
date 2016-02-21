@@ -10,7 +10,7 @@ $(document).ready(function(){
 
     $.ajax({
       method: 'DELETE',
-      url: 'http://localhost:8000/api/games/'+id,
+      url: 'http://localhost:8000/api/game/'+id,
       success: function(response, status){
         console.log(response);
         $(elem).parent().remove();
