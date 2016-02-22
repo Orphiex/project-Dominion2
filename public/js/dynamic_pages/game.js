@@ -102,7 +102,6 @@ $(document).ready(function(){
     });
   };
 
-
   // Declare player card storage variables
   var playerTurn = true;
   var playerDeck;
@@ -238,7 +237,7 @@ $(document).ready(function(){
 
     var $elems = $('.buy-button');
     $elems.each(function(index, elem){
-      if ($(elem).data('cost') <= treasureCount && $(elem).data("type") !== "action") {
+      if (($(elem).data('cost') <= treasureCount) && ($(elem).data("type") !== "action") && ($(elem).data("supply") > 0)) {
         $(elem).removeAttr('disabled');
       }
     });
