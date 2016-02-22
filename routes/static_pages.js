@@ -1,4 +1,4 @@
-var Authenticated = require("./modules/authenticated.js");
+var Authenticated = require("./modules/authenticated");
 
 exports.register = function (server, options, next) {
   server.route([
