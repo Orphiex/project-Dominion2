@@ -1,5 +1,5 @@
 var Joi   = require('joi');
-var Auth  = require('../modules/Authenticated.js');
+var Auth  = require('../modules/authenticated.js');
 
 exports.register = function(server, options, next){
   server.route([
