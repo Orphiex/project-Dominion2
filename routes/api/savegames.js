@@ -34,7 +34,10 @@ exports.register = function(server, options, next){
 
             var gameState = {
               user_id: ObjectID(session.user_id),
-              // FILL IN HERE
+              player_1: request.payload.player_1,
+              player_2: request.payload.player_2,
+              shop: request.payload.shop,
+              turn: request.payload.turn
             };
 
             db.collection('savegames').insert(gameState, function (err, doc){

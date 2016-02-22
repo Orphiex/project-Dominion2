@@ -14,23 +14,28 @@ $(document).ready(function(){
 
   var bindQuitGame = function(){
     $('#quit-game').off().on('click', function(e){
-      console.log(test);
       $('#quitGameModal').modal();
     });
 
     $('#keepSaveGame').off().on('click', function(e){
-      console.log("test binding");
       window.location.href = '/setup';
     });
 
     $('#deleteSaveGame').off().on('click', function(e){
-      console.log("test binding");
       window.location.href = '/setup';
     });
   };
 
   var fullDeck  = null;
   var emptyDeck = null;
+
+  // Set deck objects
+  var p1_deck = {};
+  var p1_hand = {};
+  var p1_discard = {};
+  var p2_deck = {};
+  var p2_hand = {};
+  var p2_discard = {};
 
   var setGameDecks = function(){
     if ($("#game-id").data('new') == true) {
@@ -41,29 +46,62 @@ $(document).ready(function(){
           console.log(response);
           fullDeck  = response[0].cards;
           emptyDeck = response[1].cards;
-          console.log(fullDeck);
-          console.log(emptyDeck);
+          startSetup();
+          turnSetup();
+          bindQuitGame();
         }
       });
     } else {
       $.ajax({
         method: 'GET',
-        url: '/api/savegames/' + $('game-id').data('id'),
+        url: '/api/savegames/' + $('#game-id').data('id'),
         success: function (response) {
           console.log(response);
-
         }
       });
     }
   };
 
-  // Set deck objects
-  var p1_deck = {};
-  var p1_hand = {};
-  var p1_discard = {};
-  var p2_deck = {};
-  var p2_hand = {};
-  var p2_discard = {};
+  var createSaveGame = function(e){
+    e.preventDefault();
+
+    var saveFile = {
+      savegame_id: $('#game-id').data('id'),
+      player_1: {
+        deck: p1_deck,
+        discard: p1_discard,
+        hand: "",
+      },
+      player_2: {
+        deck: p2_deck,
+        discard: p2_discard,
+        hand: "",
+      },
+      shop: {
+
+      },
+      turn: {
+        playerTurn: playerTurn,
+        step: "",
+        actionCount: actionCount,
+        buyCount: buyCount,
+        treasureCount: treasureCount
+      }
+    };
+
+    $.ajax({
+      method: 'POST',
+      url: '/api/savegames',
+      data: saveFile,
+      success: function(response, status){
+        console.log(response);
+      },
+      error: function(response, status){
+        console.log(response);
+      }
+    });
+  };
+
 
   // Declare player card storage variables
   var playerTurn = true;
@@ -75,8 +113,12 @@ $(document).ready(function(){
   var startSetup = function(){
     // create player start decks
     shopSetup();
+    console.log("shopSetup");
     assignArrays();
+    console.log("assignArrays");
+    console.log(emptyDeck);
     createDeck(p1_deck);
+    console.log("createDeck: p1_deck");
     createDeck(p2_deck);
     drawHand(p1_deck, p1_hand);
     drawHand(p2_deck, p2_hand);
@@ -308,15 +350,15 @@ $(document).ready(function(){
     if (findDeckSize(playerDeck) < 1) {
       discardMerge(playerDiscard, playerDeck);
     }
-    var cardKey = shuffleDeck(playerDeck);
-    var html = '<div class="handCards" data-name="' + cardKey + '">' + cardKey + '</div>';
+    var cardObj = shuffleDeck(playerDeck);
+    var html = '<div class="handCards" data-name="' + cardObj.name + '" style="background-image: url(' + cardObj.cardImage + ');"></div>';
 
     if (p1_deck === playerDeck) {
       $('#player1 .player-hand').append(html);
     } else {
       $('#player2 .player-hand').append(html);
     }
-    playerDeck[cardKey].supply--;
+    playerDeck[cardObj.name].supply--;
   }
 
   function drawHand(playerDeck) {
@@ -332,7 +374,10 @@ $(document).ready(function(){
     for(var j = 0; j < timesToRun; j++){
       var k = Math.floor(Math.random() * playerDeckKeys.length);
       if(playerDeck[playerDeckKeys[k]].supply > 0) {
-        return playerDeckKeys[k];
+        return {
+          name: playerDeckKeys[k],
+          cardImage: $(playerDeck[playerDeckKeys[k]])[0].cardImage
+        }
       } else {
         playerDeckKeys.splice(k,1);
       }
@@ -401,12 +446,6 @@ $(document).ready(function(){
     buttonSetup();
     console.log("set up buttons");
     setGameDecks();
-    startSetup();
-    console.log("build shop and assemble decks");
-    turnSetup();
-    console.log("set up turn order");
-    bindQuitGame();
-    console.log("bind quit game button");
   };
 
   init();
