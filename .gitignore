@@ -6,3 +6,5 @@ npm-debug.log
 */*/.DS_Store
 node_modules
 public/images
+public/dynamic_pages/dominion-deck.js
+public/dynamic_pages/empty-deck.js
