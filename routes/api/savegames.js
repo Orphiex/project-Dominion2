@@ -3,48 +3,28 @@ var Auth  = require('../modules/Authenticated.js');
 
 exports.register = function(server, options, next){
   server.route([
-    { // Get all savegames
-      method: 'GET',
-      path: '/api/setup',
-      handler: function(request, reply){
-        var db = request.server.plugins['hapi-mongodb'].db;
-
-        db.collection('savegames').find().toArray(function (err, results){
-          if (err) { return reply(err); }
-          reply(results);
-        });
-      }
-    },
     { // Get savegames belonging to a specific user
       method: 'GET',
-      path: '/api/{username}/setup',
+      path: '/api/savegames',
       handler: function(request, reply){
-        var db = request.server.plugins['hapi-mongodb'].db;
-        var username = request.params.username;
+        Auth(request, function (result) {
+          if (result.authenticated) {
+            var db = request.server.plugins['hapi-mongodb'].db;
 
-        // Search the username, and extract the id of the user
-        db.collection('users').findOne({ username: username }, function(err, user){
-          if (err) { return reply(err).code(400); }
+            db.collection('savegames').find({ user_id: result.user._id }).toArray(function(err, savegames){
+              if (err) { return reply(err).code(400); }
 
-          // Check if user exists
-          if (user === null) {
-            return reply({ message: 'User not found!' }).code(404);
+              reply(savegames).code(200);
+            });
+          } else {
+            reply(result).code(400);
           }
-
-          // Given the user_id, we will find all the saved games having this user_id
-          var user_id = user._id;
-
-          db.collection('savegames').find({ user_id: user_id }).toArray(function(err, results){
-            if (err) { return reply(err).code(400); }
-
-            reply(results).code(200);
-          });
         });
       }
     },
     { // Create save game file
       method: 'POST',
-      path: '/api/setup',
+      path: '/api/savegames',
       handler: function(request, reply){
         Auth(request, function(result){
           if (result.authenticated) {
@@ -69,7 +49,7 @@ exports.register = function(server, options, next){
     },
     { // Delete savegame
       method: 'DELETE',
-      path: '/api/setup/{id}',
+      path: '/api/savegames/{id}',
       handler: function(request, reply){
         Auth(request, function(result){
           if (result.authenticated){ // Logged in
@@ -107,7 +87,7 @@ exports.register = function(server, options, next){
     },
     { // Update Bond
       method: 'PUT',
-      path: '/api/setup/{id}',
+      path: '/api/savegames/{id}',
       handler: function(request, reply){
         Auth(request, function(result){
           if (result.authenticated){

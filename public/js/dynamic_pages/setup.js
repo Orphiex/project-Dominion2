@@ -37,16 +37,8 @@ $(document).ready(function(){
     });
   };
 
-  var bindNewGame = function(){
-    $('#newGame').on('click', function(e){
-      console.log("test binding");
-      window.location.href = '/game';
-    });
-  };
-
   var init = function(){
     bindSignOut();
-    bindNewGame();
   };
 
   init();

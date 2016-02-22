@@ -5,6 +5,7 @@ module.exports = function(request, callback) {
   if (!session) {
     return callback({
       "authenticated": false,
+      "user": null,
       "message": "Unauthorized"
     });
   }
@@ -15,12 +16,18 @@ module.exports = function(request, callback) {
     if (result === null) {
       return callback({
         "authenticated": false,
+        "user": null,
         "message": "Unauthorized"
       });
     } else {
-      return callback({
-        "authenticated": true,
-        "message": "Authorized"
+      db.collection('users').findOne({ "_id": session.user_id }, function (err, user) {
+        if (err) { return reply(err).code(400); }
+
+        return callback({
+          "authenticated": true,
+          "user": user,
+          "message": "Authorized"
+        });
       });
     }
   });

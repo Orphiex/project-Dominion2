@@ -21,7 +21,11 @@ exports.register = function (server, options, next) {
       handler: function(request, reply){
         Authenticated(request, function(result){
           if (result.authenticated) {
-            reply.view('dynamic_pages/game').code(200);
+            var db       = request.server.plugins['hapi-mongodb'].db;
+            var ObjectID = request.server.plugins['hapi-mongodb'].ObjectID;
+            var id = new ObjectID();
+
+            reply.view('dynamic_pages/game', {id: id, newGame: true}).code(200);
           } else {
             reply.redirect('/?message=Please Sign In First').code(307);
           }

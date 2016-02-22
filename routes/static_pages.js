@@ -16,12 +16,10 @@ exports.register = function (server, options, next) {
       path: '/',
       handler: function(request, reply) {
         Authenticated(request, function (result) {
-          var data = result; // need to have authenticated inorder to show signout button
-          if (data.authenticated) {
+          if (result.authenticated) {
             reply.redirect('/setup').code(307);
           } else {
-            console.log(data);
-            reply.view('static_pages/home', data).code(200);
+            reply.view('static_pages/home').code(200);
           }
         });
       }

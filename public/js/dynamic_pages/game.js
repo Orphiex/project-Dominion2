@@ -13,19 +13,48 @@ $(document).ready(function(){
   };
 
   var bindQuitGame = function(){
-    $('#quit-game').on('click', function(e){
+    $('#quit-game').off().on('click', function(e){
+      console.log(test);
       $('#quitGameModal').modal();
     });
 
-    $('#keepSaveGame').on('click', function(e){
+    $('#keepSaveGame').off().on('click', function(e){
       console.log("test binding");
       window.location.href = '/setup';
     });
 
-    $('#deleteSaveGame').on('click', function(e){
+    $('#deleteSaveGame').off().on('click', function(e){
       console.log("test binding");
       window.location.href = '/setup';
     });
+  };
+
+  var fullDeck  = null;
+  var emptyDeck = null;
+
+  var setGameDecks = function(){
+    if ($("#game-id").data('new') == true) {
+      $.ajax({
+        method: 'GET',
+        url: '/api/cards',
+        success: function (response) {
+          console.log(response);
+          fullDeck  = response[0].cards;
+          emptyDeck = response[1].cards;
+          console.log(fullDeck);
+          console.log(emptyDeck);
+        }
+      });
+    } else {
+      $.ajax({
+        method: 'GET',
+        url: '/api/savegames/' + $('game-id').data('id'),
+        success: function (response) {
+          console.log(response);
+
+        }
+      });
+    }
   };
 
   // Set deck objects
@@ -81,17 +110,17 @@ $(document).ready(function(){
   // Assign supply values
   var dominionShop;
   var shopSetup = function(){
-    dominionShop = dominionCards;
+    dominionShop = fullDeck;
     for (var key in dominionShop){
       $('.buy-button[data-name="' + key + '"]').data("supply", dominionShop[key].supply).data("cost", dominionShop[key].cost).data("type", dominionShop[key].type);
     }
   };
 
   var assignArrays = function(){
-    $.extend(true, p1_deck, blankCards);
-    $.extend(true, p1_discard, blankCards);
-    $.extend(true, p2_deck, blankCards);
-    $.extend(true, p2_discard, blankCards);
+    $.extend(true, p1_deck, emptyDeck);
+    $.extend(true, p1_discard, emptyDeck);
+    $.extend(true, p2_deck, emptyDeck);
+    $.extend(true, p2_discard, emptyDeck);
   };
 
 
@@ -368,10 +397,16 @@ $(document).ready(function(){
   }
 
   var init = function(){
+    console.log("initialize");
     buttonSetup();
+    console.log("set up buttons");
+    setGameDecks();
     startSetup();
+    console.log("build shop and assemble decks");
     turnSetup();
+    console.log("set up turn order");
     bindQuitGame();
+    console.log("bind quit game button");
   };
 
   init();
