@@ -32,6 +32,10 @@ exports.register = function (server, options, next) {
         });
       }
     }
+    // {
+    //   method: 'GET',
+    //   path: '/game'
+    // }
   ]);
 
   next();

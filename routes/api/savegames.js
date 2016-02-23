@@ -1,5 +1,5 @@
 var Joi   = require('joi');
-var Auth  = require('../modules/authenticated.js');
+var Auth  = require('../modules/authenticated');
 
 exports.register = function(server, options, next){
   server.route([
@@ -32,12 +32,15 @@ exports.register = function(server, options, next){
             var ObjectID = request.server.plugins['hapi-mongodb'].ObjectID;
             var session = request.yar.get('hapi_dominion_session');
 
+            var payload = JSON.parse(request.payload.jsonString);
+
             var gameState = {
               user_id: ObjectID(session.user_id),
-              player_1: request.payload.player_1,
-              player_2: request.payload.player_2,
-              shop: request.payload.shop,
-              turn: request.payload.turn
+              savegame_id: ObjectID(payload.savegame_id),
+              player_1: payload.player_1,
+              player_2: payload.player_2,
+              shop: payload.shop,
+              turn: payload.turn
             };
 
             db.collection('savegames').insert(gameState, function (err, doc){
@@ -88,7 +91,7 @@ exports.register = function(server, options, next){
         });
       }
     },
-    { // Update Bond
+    { // Update save game
       method: 'PUT',
       path: '/api/savegames/{id}',
       handler: function(request, reply){
@@ -100,14 +103,20 @@ exports.register = function(server, options, next){
             var id = ObjectID(request.params.id);
             var user_id = ObjectID(session.user_id);
 
+            var payload = JSON.parse(request.payload.jsonString);
+
             var gameState = {
-              // FILL THIS IN
+              savegame_id: ObjectID(payload.savegame_id),
+              player_1: payload.player_1,
+              player_2: payload.player_2,
+              shop: payload.shop,
+              turn: payload.turn
             };
 
             db.collection('savegames').findOne({ '_id': id }, function(err, savegame){
               if (err) { return reply(err).code(400); }
 
-              // Check if Bond exists
+              // Check if savegame exists
               if (savegame === null) {
                 return reply({ message: "No such save game file exists." }).code(404);
               }

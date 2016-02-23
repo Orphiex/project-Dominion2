@@ -31,10 +31,10 @@ $(document).ready(function(){
 
   // Set deck objects
   var p1_deck = {};
-  var p1_hand = {};
+  var p1_hand = [];
   var p1_discard = {};
   var p2_deck = {};
-  var p2_hand = {};
+  var p2_hand = [];
   var p2_discard = {};
 
   var setGameDecks = function(){
@@ -49,6 +49,7 @@ $(document).ready(function(){
           startSetup();
           turnSetup();
           bindQuitGame();
+          createSaveGame();
         }
       });
     } else {
@@ -62,37 +63,64 @@ $(document).ready(function(){
     }
   };
 
-  var createSaveGame = function(e){
-    e.preventDefault();
+  var createSaveGame = function(){
 
     var saveFile = {
       savegame_id: $('#game-id').data('id'),
       player_1: {
         deck: p1_deck,
         discard: p1_discard,
-        hand: "",
+        hand: p1_hand
       },
       player_2: {
         deck: p2_deck,
         discard: p2_discard,
-        hand: "",
+        hand: p2_hand
       },
-      shop: {
-
-      },
-      turn: {
-        playerTurn: playerTurn,
-        step: "",
-        actionCount: actionCount,
-        buyCount: buyCount,
-        treasureCount: treasureCount
-      }
+      shop: dominionShop,
+      turn: playerTurn
     };
+
+    var jsonString = JSON.stringify(saveFile);
 
     $.ajax({
       method: 'POST',
       url: '/api/savegames',
-      data: saveFile,
+      data: {jsonString: jsonString},
+      dataType: "json",
+      success: function(response, status){
+        console.log(response);
+      },
+      error: function(response, status){
+        console.log(response);
+      }
+    });
+  };
+
+  var updateSaveGame = function(){
+
+    var saveFile = {
+      savegame_id: $('#game-id').data('id'),
+      player_1: {
+        deck: p1_deck,
+        discard: p1_discard,
+        hand: p1_hand
+      },
+      player_2: {
+        deck: p2_deck,
+        discard: p2_discard,
+        hand: p2_hand
+      },
+      shop: dominionShop,
+      turn: playerTurn
+    };
+
+    var jsonString = JSON.stringify(saveFile);
+
+    $.ajax({
+      method: 'PUT',
+      url: '/api/savegames',
+      data: {jsonString: jsonString},
       success: function(response, status){
         console.log(response);
       },
@@ -111,13 +139,9 @@ $(document).ready(function(){
   // Build shop and assemble decks
   var startSetup = function(){
     // create player start decks
-    shopSetup();
-    console.log("shopSetup");
+    shopCreate();
     assignArrays();
-    console.log("assignArrays");
-    console.log(emptyDeck);
     createDeck(p1_deck);
-    console.log("createDeck: p1_deck");
     createDeck(p2_deck);
     drawHand(p1_deck, p1_hand);
     drawHand(p2_deck, p2_hand);
@@ -150,10 +174,36 @@ $(document).ready(function(){
   // Set up shop
   // Assign supply values
   var dominionShop;
-  var shopSetup = function(){
+
+  var shopCreate = function(){
     dominionShop = fullDeck;
+    shopSetup();
+  };
+
+  // var shopLoad = function(){
+  //   dominionShop = "";
+  //   shopSetup();
+  // };
+
+  var shopSetup = function(){
     for (var key in dominionShop){
       $('.buy-button[data-name="' + key + '"]').data("supply", dominionShop[key].supply).data("cost", dominionShop[key].cost).data("type", dominionShop[key].type);
+    }
+  };
+
+  var shopSave = function(){
+    for (var key in dominionShop){
+      key.supply = $('.buy-button[data-name="' + key + '"]').data("supply");
+    }
+  };
+
+
+  //$('.buy-button[data-name="' + key + '"]').data('supply')
+
+  function shopSave(){
+    var currentShop = emptyDeck;
+    for (var key in currentShop){
+      $('.buy-button[data-name="' + key + '"]').data("supply").data("cost", dominionShop[key].cost).data("type", dominionShop[key].type);
     }
   };
 
@@ -293,6 +343,7 @@ $(document).ready(function(){
     }
     $('.start-turn').removeAttr('disabled');
     turnSetup();
+    updateSaveGame();
   });
 
   // Step 8 binding - endgame
@@ -354,8 +405,12 @@ $(document).ready(function(){
 
     if (p1_deck === playerDeck) {
       $('#player1 .player-hand').append(html);
+      p1_hand.push(cardObj);
+      console.log(p1_hand);
     } else {
       $('#player2 .player-hand').append(html);
+      p2_hand.push(cardObj);
+      console.log(p2_hand);
     }
     playerDeck[cardObj.name].supply--;
   }
@@ -376,7 +431,7 @@ $(document).ready(function(){
         return {
           name: playerDeckKeys[k],
           cardImage: $(playerDeck[playerDeckKeys[k]])[0].cardImage
-        }
+        };
       } else {
         playerDeckKeys.splice(k,1);
       }
@@ -417,6 +472,21 @@ $(document).ready(function(){
 
   // Moves one card to the discard pile
   function discardCard(elem, cardName, playerDiscard) {
+    var activeHand;
+    if (playerTurn === true) {
+      activeHand = p1_hand;
+    } else {
+      activeHand = p2_hand;
+    }
+    for (var i = 0; i < activeHand.length; i++) {
+      if (activeHand[i].name === cardName) {
+        activeHand.splice(i, 1);
+        break;
+      }
+    }
+    console.log(activeHand);
+    console.log(p1_hand);
+    console.log(p2_hand);
     elem.remove();
     playerDiscard[cardName].supply++;
   }
