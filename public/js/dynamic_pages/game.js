@@ -392,6 +392,7 @@ $(document).ready(function(){
     $('#endGameModal button').on('click', function(){
       modalBody.empty();
     });
+    deleteSaveGame();
   }
 
 

@@ -1,3 +1,8 @@
-header img {
-  align: center;
+header {
+  background-color: #4385c2;
+  text-align: center;
+}
+
+img {
+  margin: auto;
 }

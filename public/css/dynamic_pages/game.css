@@ -3,6 +3,11 @@
   max-width: 1200px;
 }
 
+header#game-id{
+  background-color: white;
+  margin-top: 15px;
+}
+
 .reset-game {
   float: right;
 }
