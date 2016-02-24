@@ -7,14 +7,44 @@ exports.register = function(server, options, next){
       method: 'GET',
       path: '/api/savegames',
       handler: function(request, reply){
-        Auth(request, function (result) {
-          if (result.authenticated) {
+        Auth(request, function (result){
+          if (result.authenticated){
             var db = request.server.plugins['hapi-mongodb'].db;
+            var ObjectID = request.server.plugins['hapi-mongodb'].ObjectID;
 
-            db.collection('savegames').find({ user_id: result.user._id }).toArray(function(err, savegames){
+            var user_id = ObjectID(result.user._id);
+
+            db.collection('savegames').find({ user_id: user_id }).toArray(function(err, savegames){
               if (err) { return reply(err).code(400); }
 
               reply(savegames).code(200);
+            });
+          } else {
+            reply(result).code(400);
+          }
+        });
+      }
+    },
+    { // Get one savegame
+      method: 'GET',
+      path: '/api/savegames/{savegame_id}',
+      handler: function(request, reply){
+        Auth(request, function (result){
+          if (result.authenticated){
+            var db = request.server.plugins['hapi-mongodb'].db;
+            var ObjectID = request.server.plugins['hapi-mongodb'].ObjectID;
+
+            var user_id = ObjectID(result.user._id);
+            var savegame_id = request.params.savegame_id.length === 24 ? ObjectID(request.params.savegame_id) : null;
+
+            db.collection('savegames').findOne({ "_id": savegame_id, user_id: user_id }, function(err, savegame){
+              if (err) { return reply(err).code(400); }
+
+              if (savegame === null){
+                return reply({message: "No game found"}).code(404);
+              }
+
+              reply(savegame).code(200);
             });
           } else {
             reply(result).code(400);
@@ -35,8 +65,9 @@ exports.register = function(server, options, next){
             var payload = JSON.parse(request.payload.jsonString);
 
             var gameState = {
+              "_id": ObjectID(payload.savegame_id),
               user_id: ObjectID(session.user_id),
-              savegame_id: ObjectID(payload.savegame_id),
+              game_name: payload.game_name,
               player_1: payload.player_1,
               player_2: payload.player_2,
               shop: payload.shop,
@@ -66,7 +97,7 @@ exports.register = function(server, options, next){
             var id      = ObjectID(request.params.id);
             var user_id = ObjectID(session.user_id);
 
-            // Find the agent
+            // Find the savegame file
             db.collection('savegames').findOne({ '_id': id }, function(err, savegame){
               if (err) { return reply(err).code(400); }
 
@@ -74,8 +105,7 @@ exports.register = function(server, options, next){
               if (savegame === null) {
                 return reply({ message: 'There is no such saved game.' }).code(404);
               }
-              console.log(savegame);
-              // If agent's user_id is the same as current user then remove save game file
+              // If savegame file's user_id is the same as current user then remove savegame file
               if (savegame.user_id.toString() === user_id.toString()){ // Your savegame
                 db.collection('savegames').remove({ '_id': id }, function (err, doc){
                   if (err) { return reply(err).code(400); }
@@ -106,7 +136,7 @@ exports.register = function(server, options, next){
             var payload = JSON.parse(request.payload.jsonString);
 
             var gameState = {
-              savegame_id: ObjectID(payload.savegame_id),
+              game_name: payload.game_name,
               player_1: payload.player_1,
               player_2: payload.player_2,
               shop: payload.shop,

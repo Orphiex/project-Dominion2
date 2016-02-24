@@ -1,9 +1,9 @@
 $(document).ready(function(){
-  var createNewLi = function(id, savegame_id){
-    var newLi = '<li data-id="' + id +
-      '" data-savegame_id="' + savegame_id +
-      '">' +
-      '<button class="edit btn btn-success">Play</button>' +
+  var createNewLi = function(id, name){
+    var newLi = '' +
+    '<li data-id="' + id + '">' +
+      '<p>' + name + '</p>' +
+      '<a href="/game/' + id + '" class="play btn btn-success">Play</a>' +
       '<button class="delete btn btn-danger">Delete</button>' +
     '</li>';
 
@@ -16,8 +16,12 @@ $(document).ready(function(){
       url: '/api/savegames',
       success: function(response, status){
         response.forEach(function(elem){
-          createNewLi(elem._id, elem.savegame_id);
+          createNewLi(elem._id, elem.game_name);
+          bindDelete();
         });
+      },
+      error: function (response) {
+        console.log(response);
       }
     });
   };
@@ -27,14 +31,20 @@ $(document).ready(function(){
 
     $.ajax({
       method: 'DELETE',
-      url: 'http://localhost:8000/api/savegames/'+id,
+      url: '/api/savegames/'+id,
       success: function(response, status){
-        console.log(response);
         $(elem).parent().remove();
       },
       error: function(response, status){
         console.log(response);
       }
+    });
+  };
+
+  var bindDelete = function(){
+    $('.delete').off().on('click', function (e){
+      e.preventDefault();
+      deleteGame(this);
     });
   };
 
@@ -44,7 +54,6 @@ $(document).ready(function(){
         type: 'DELETE',
         url: '/api/signout',
         success: function(response){
-          console.log(response);
           window.location.href = '/';
         },
         error: function(response){
@@ -56,6 +65,7 @@ $(document).ready(function(){
 
   var init = function(){
     bindSignOut();
+    getPlayerSaves();
   };
 
   init();

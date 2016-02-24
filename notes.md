@@ -82,3 +82,5 @@ Mine:         http://wiki.dominionstrategy.com/images/archive/8/8e/2015111400054
 Witch:        http://wiki.dominionstrategy.com/images/archive/f/f3/20151114001250%21Witch.jpg
 
 Adventurer:   http://wiki.dominionstrategy.com/images/archive/7/71/20151114001603%21Adventurer.jpg
+
+q

@@ -1,5 +1,6 @@
 module.exports = function(request, callback) {
   var db = request.server.plugins['hapi-mongodb'].db;
+  var ObjectID = request.server.plugins['hapi-mongodb'].ObjectID;
   var session = request.yar.get('hapi_dominion_session'); // CHANGE-ME
 
   if (!session) {
@@ -20,7 +21,7 @@ module.exports = function(request, callback) {
         "message": "Unauthorized"
       });
     } else {
-      db.collection('users').findOne({ "_id": session.user_id }, function (err, user) {
+      db.collection('users').findOne({ "_id": ObjectID(session.user_id) }, function (err, user) {
         if (err) { return reply(err).code(400); }
 
         return callback({
